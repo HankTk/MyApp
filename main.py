@@ -8,7 +8,7 @@ current_page_container = None
 def create_menu():
     """Create the left sidebar menu"""
     with ui.left_drawer().classes('bg-blue-50'):
-        ui.label('MyApp').classes('text-h6 q-pa-md')
+        ui.label('Menu').classes('text-h6 q-pa-md')
         ui.separator()
         
         # Home button
@@ -37,11 +37,11 @@ def main():
     global current_page_container
     
     # Set app title
-    ui.page_title('MyApp')
+    ui.page_title('My Application')
     
     # Create header
     with ui.header().classes('bg-blue-600 text-white'):
-        ui.label('MyApp').classes('text-h5')
+        ui.label('My Application').classes('text-h5')
     
     # Create left menu
     create_menu()
@@ -55,14 +55,15 @@ def main():
     
     # Create footer
     with ui.footer().classes('bg-grey-100'):
-        ui.label('© 2024 MyApp').classes('text-caption')
+        ui.label('© 2024 My Application').classes('text-caption')
 
 if __name__ in {"__main__", "__mp_main__"}:
     main()
     ui.run(
-        title='MyApp',
+        title='My Application',
         port=8080,
         reload=True,
         show=True,
-        native=True
+        native=True,
+        window_size=(1400, 900)  # Default window size (width, height)
     ) 

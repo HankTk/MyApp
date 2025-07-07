@@ -11,10 +11,10 @@ def create_settings_page():
     
     # Page data (like Angular component data)
     page_data = {
-        'title': 'MyApp - Settings',
+        'title': 'My Application - Settings',
         'header_title': '⚙️ Settings',
         'header_subtitle': 'Configure your application preferences',
-        'app_name': 'MyApp',
+        'app_name': 'My Application',
         'settings': {
             'general': {
                 'theme': 'Light',

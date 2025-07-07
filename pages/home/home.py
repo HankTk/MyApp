@@ -11,10 +11,10 @@ def create_home_page():
     
     # Page data (like Angular component data)
     page_data = {
-        'title': 'MyApp - Home',
-        'header_title': '🏠 Welcome to MyApp',
+        'title': 'My Application - Home',
+        'header_title': '🏠 Welcome to My Application',
         'header_subtitle': 'Your application dashboard',
-        'app_name': 'MyApp',
+        'app_name': 'My Application',
         'stats': {
             'total_items': 123,
             'active_users': 45,
@@ -99,7 +99,7 @@ def create_home_page():
 
 def create_fallback_home_page():
     """Fallback home page using pure NiceGUI components"""
-    ui.label('🏠 Welcome to MyApp').classes('text-h4 q-mb-md text-center')
+    ui.label('🏠 Welcome to My Application').classes('text-h4 q-mb-md text-center')
     ui.label('This is the home page of your application.').classes('text-body1 q-mb-lg text-center')
     
     with ui.row().classes('full-width justify-center'):

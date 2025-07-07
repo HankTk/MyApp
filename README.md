@@ -136,7 +136,7 @@ def create_page_with_variables():
     
     # Replace variables
     rendered = template.format(
-        app_name="MyApp",
+        app_name="My Application",
         user_name="John Doe"
     )
     
