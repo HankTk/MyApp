@@ -1,21 +1,10 @@
 from nicegui import ui, app
 from pages.home.home import create_home_page
 from pages.settings.settings import create_settings_page
+from components.navigation.menu import create_menu
 
 # Global variable to manage current page
 current_page_container = None
-
-def create_menu():
-    """Create the left sidebar menu"""
-    with ui.left_drawer().classes('bg-blue-50'):
-        ui.label('Menu').classes('text-h6 q-pa-md')
-        ui.separator()
-        
-        # Home button
-        home_btn = ui.button('🏠 Home', on_click=lambda: switch_page('home')).classes('full-width q-ma-sm')
-        
-        # Settings button
-        settings_btn = ui.button('⚙️ Settings', on_click=lambda: switch_page('settings')).classes('full-width q-ma-sm')
 
 def switch_page(page_name):
     """Switch between pages"""
@@ -44,7 +33,7 @@ def main():
         ui.label('My Application').classes('text-h5')
     
     # Create left menu
-    create_menu()
+    create_menu(switch_page)
     
     # Main content area
     with ui.column().classes('full-width q-pa-md') as content_container:
