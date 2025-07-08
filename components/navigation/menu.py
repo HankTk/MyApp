@@ -13,5 +13,8 @@ def create_menu(switch_page_callback):
         # Home button
         home_btn = ui.button('🏠 Home', on_click=lambda: switch_page_callback('home')).classes('full-width q-ma-sm')
         
+        # Chart button
+        chart_btn = ui.button('📊 Charts', on_click=lambda: switch_page_callback('chart')).classes('full-width q-ma-sm')
+        
         # Settings button
         settings_btn = ui.button('⚙️ Settings', on_click=lambda: switch_page_callback('settings')).classes('full-width q-ma-sm') 

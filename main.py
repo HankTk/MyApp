@@ -1,6 +1,7 @@
 from nicegui import ui, app
 from pages.home.home import create_home_page
 from pages.settings.settings import create_settings_page
+from pages.chart.chart import create_chart_page
 from components.navigation.menu import create_menu
 
 # Global variable to manage current page
@@ -20,6 +21,8 @@ def switch_page(page_name):
             create_home_page()
         elif page_name == 'settings':
             create_settings_page()
+        elif page_name == 'chart':
+            create_chart_page()
 
 def main():
     """Main application"""

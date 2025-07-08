@@ -1,0 +1,80 @@
+{
+  "title": "My Application - Charts",
+  "header_title": "📊 Chart Generator",
+  "header_subtitle": "Create beautiful visualizations with matplotlib",
+  "app_name": "My Application",
+  "chart_data": {
+    "x_values": "1,2,3,4,5",
+    "y_values": "2,4,6,8,10",
+    "title": "Sample Line Chart",
+    "x_label": "X Axis",
+    "y_label": "Y Axis"
+  },
+  "chart_types": [
+    {
+      "name": "Line Chart",
+      "value": "line",
+      "description": "Connect data points with lines",
+      "sample_data": {
+        "x": "1,2,3,4,5",
+        "y": "2,4,6,8,10"
+      }
+    },
+    {
+      "name": "Bar Chart",
+      "value": "bar",
+      "description": "Display data as rectangular bars",
+      "sample_data": {
+        "x": "A,B,C,D,E",
+        "y": "10,20,15,25,30"
+      }
+    },
+    {
+      "name": "Scatter Plot",
+      "value": "scatter",
+      "description": "Show relationship between variables",
+      "sample_data": {
+        "x": "1,2,3,4,5",
+        "y": "3,1,4,1,5"
+      }
+    },
+    {
+      "name": "Pie Chart",
+      "value": "pie",
+      "description": "Show proportions of a whole",
+      "sample_data": {
+        "x": "",
+        "y": "30,20,25,15,10"
+      }
+    }
+  ],
+  "quick_charts": [
+    {
+      "name": "Sales Trend",
+      "type": "line",
+      "data": {
+        "x": "Jan,Feb,Mar,Apr,May",
+        "y": "100,120,140,130,160",
+        "title": "Monthly Sales Trend"
+      }
+    },
+    {
+      "name": "Product Categories",
+      "type": "bar",
+      "data": {
+        "x": "Electronics,Clothing,Books,Food",
+        "y": "45,30,15,10",
+        "title": "Sales by Category"
+      }
+    },
+    {
+      "name": "Customer Satisfaction",
+      "type": "pie",
+      "data": {
+        "x": "",
+        "y": "60,25,10,5",
+        "title": "Customer Satisfaction Ratings"
+      }
+    }
+  ]
+} 
