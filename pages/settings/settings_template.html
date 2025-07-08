@@ -272,47 +272,6 @@
         <button class="btn btn-secondary" onclick="handleResetSettings()">🔄 Reset to Default</button>
     </div>
     
-    <script>
-        function handleThemeChange(value) {
-            window.parent.postMessage({type: 'theme_change', value: value}, '*');
-        }
-        
-        function handleLanguageChange(value) {
-            window.parent.postMessage({type: 'language_change', value: value}, '*');
-        }
-        
-        function handleNotificationChange(value) {
-            window.parent.postMessage({type: 'notification_change', value: value}, '*');
-        }
-        
-        function handlePasswordChange() {
-            window.parent.postMessage({type: 'password_change'}, '*');
-        }
-        
-        function handleAutosaveChange(value) {
-            window.parent.postMessage({type: 'autosave_change', value: value}, '*');
-        }
-        
-        function handleRetentionChange(value) {
-            window.parent.postMessage({type: 'retention_change', value: value}, '*');
-        }
-        
-        function handleSaveSettings() {
-            const settings = {
-                theme: document.getElementById('theme-select').value,
-                language: document.getElementById('language-select').value,
-                notifications: document.getElementById('notification-toggle').checked,
-                username: document.getElementById('username-input').value,
-                email: document.getElementById('email-input').value,
-                autosave: document.getElementById('autosave-toggle').checked,
-                retention: document.getElementById('retention-select').value
-            };
-            window.parent.postMessage({type: 'save_settings', settings: settings}, '*');
-        }
-        
-        function handleResetSettings() {
-            window.parent.postMessage({type: 'reset_settings'}, '*');
-        }
-    </script>
+
 </body>
 </html> 

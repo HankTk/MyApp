@@ -4,204 +4,67 @@ import os
 
 # Add utils directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from utils.template_engine import render_template, render_string
+from utils.template_loader import load_template
+from utils.script_loader import load_script, load_json
+from utils.page_data_loader import load_page_data
+
+def create_json_loader_section():
+    """Create a JSON data loading section for settings page"""
+    with ui.card().classes('q-ma-md'):
+        ui.label('📄 Settings Data Loader').classes('text-h6 q-mb-md')
+        
+        # JSON file loading
+        json_path = ui.input('JSON Path', placeholder='Enter JSON path (e.g., data/pages/settings_data.json)').classes('q-mb-sm')
+        
+        def load_json_file():
+            if json_path.value:
+                data = load_json(json_path.value)
+                if data and "error" not in data:
+                    ui.notify('JSON data loaded successfully!')
+                    with ui.card().classes('q-mt-sm'):
+                        ui.label('JSON Data:').classes('text-subtitle2')
+                        ui.json_editor(data, on_change=lambda e: ui.notify(f'JSON changed: {e}'))
+                else:
+                    ui.notify(str(data), type='error')
+        
+        ui.button('Load JSON', on_click=load_json_file).classes('q-mb-sm')
+        
+        # Quick load buttons
+        ui.label('Quick Load:').classes('text-subtitle2 q-mb-sm')
+        
+        quick_json_files = [
+            ('Settings Data', 'pages/settings/settings_data.json'),
+            ('User Config', 'data/user_config.json'),
+            ('App Settings', 'data/app_settings.json'),
+            ('Home Page Data', 'pages/home/home_data.json')
+        ]
+        
+        for name, path in quick_json_files:
+            def load_quick_json(p=path):
+                json_path.value = p
+                load_json_file()
+            
+            ui.button(f'Load {name}', on_click=load_quick_json).classes('q-mr-sm q-mb-sm')
 
 def create_settings_page():
     """Create settings page using HTML template as foundation (Angular-like approach)"""
     
-    # Page data (like Angular component data)
-    page_data = {
-        'title': 'My Application - Settings',
-        'header_title': '⚙️ Settings',
-        'header_subtitle': 'Configure your application preferences',
-        'app_name': 'My Application',
-        'settings': {
-            'general': {
-                'theme': 'Light',
-                'language': 'English',
-                'notifications': True
-            },
-            'account': {
-                'username': 'user123',
-                'email': 'user@example.com'
-            },
-            'application': {
-                'autosave': True,
-                'retention_period': '30 days'
-            }
-        },
-        'themes': ['Light', 'Dark', 'Auto'],
-        'languages': ['English', 'Japanese', 'Spanish'],
-        'retention_options': ['30 days', '60 days', '90 days', '1 year']
-    }
+    # Load page data from JSON file
+    page_data = load_page_data('settings')
     
-    try:
-        # Render the page using HTML template (without script tags)
-        # Use the current directory (pages/settings) as the templates directory
-        current_dir = os.path.dirname(__file__)
-        
-        # Read the template and remove script tags
-        template_path = os.path.join(current_dir, 'settings_template.html')
-        with open(template_path, 'r') as f:
-            template_content = f.read()
-        
-        # Remove script tags from the template
-        import re
-        template_content = re.sub(r'<script[^>]*>.*?</script>', '', template_content, flags=re.DOTALL)
-        
-        # Render the cleaned template
-        rendered_html = render_string(template_content, page_data)
-        
-        # Inject the HTML into NiceGUI
-        html_container = ui.html(rendered_html).style('width: 100%;')
-        
-        # Add JavaScript event handlers using add_body_html
-        ui.add_body_html("""
-        <script>
-        function handleThemeChange(value) {
-            window.parent.postMessage({type: 'theme_change', value: value}, '*');
-        }
-        
-        function handleLanguageChange(value) {
-            window.parent.postMessage({type: 'language_change', value: value}, '*');
-        }
-        
-        function handleNotificationChange(value) {
-            window.parent.postMessage({type: 'notification_change', value: value}, '*');
-        }
-        
-        function handlePasswordChange() {
-            window.parent.postMessage({type: 'password_change'}, '*');
-        }
-        
-        function handleAutosaveChange(value) {
-            window.parent.postMessage({type: 'autosave_change', value: value}, '*');
-        }
-        
-        function handleRetentionChange(value) {
-            window.parent.postMessage({type: 'retention_change', value: value}, '*');
-        }
-        
-        function handleSaveSettings() {
-            const settings = {
-                theme: document.getElementById('theme-select').value,
-                language: document.getElementById('language-select').value,
-                notifications: document.getElementById('notification-toggle').checked,
-                username: document.getElementById('username-input').value,
-                email: document.getElementById('email-input').value,
-                autosave: document.getElementById('autosave-toggle').checked,
-                retention: document.getElementById('retention-select').value
-            };
-            window.parent.postMessage({type: 'save_settings', settings: settings}, '*');
-        }
-        
-        function handleResetSettings() {
-            window.parent.postMessage({type: 'reset_settings'}, '*');
-        }
-        
-        window.addEventListener('message', function(event) {
-            const data = event.data;
-            
-            switch(data.type) {
-                case 'theme_change':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: `Theme changed to: ${data.value}`
-                    }, '*');
-                    break;
-                    
-                case 'language_change':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: `Language changed to: ${data.value}`
-                    }, '*');
-                    break;
-                    
-                case 'notification_change':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: `Notifications: ${data.value ? 'On' : 'Off'}`
-                    }, '*');
-                    break;
-                    
-                case 'password_change':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: 'Password change dialog opened!'
-                    }, '*');
-                    break;
-                    
-                case 'autosave_change':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: `Auto Save: ${data.value ? 'On' : 'Off'}`
-                    }, '*');
-                    break;
-                    
-                case 'retention_change':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: `Data retention changed to: ${data.value}`
-                    }, '*');
-                    break;
-                    
-                case 'save_settings':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: 'Settings saved successfully!'
-                    }, '*');
-                    break;
-                    
-                case 'reset_settings':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: 'Settings reset to default!'
-                    }, '*');
-                    break;
-            }
-        });
-        </script>
-        """)
-        
+    # Load settings handler script first
+    load_script('pages/settings/settings_handler.js')
+    
+    # Load and render the page using HTML template from file
+    template_path = os.path.join(os.path.dirname(__file__), 'settings_template.html')
+    html_container = load_template(template_path, page_data)
+    
+    if html_container:
+        # Add JSON loader section
+        # create_json_loader_section()
         return html_container
-        
-    except FileNotFoundError as e:
-        # Fallback to NiceGUI components if template not found
-        ui.label('❌ Template file not found').classes('text-h6 text-red')
-        ui.label(str(e)).classes('text-caption')
-        
-        # Create fallback page with NiceGUI components
-        create_fallback_settings_page()
-        
-    except Exception as e:
-        ui.label(f'❌ Error rendering template: {str(e)}').classes('text-h6 text-red')
-        create_fallback_settings_page()
+    else:
+        # Show message if template loading failed
+        ui.label('Settings page could not be loaded.').classes('text-h6 q-mb-md text-center text-red')
 
-def create_fallback_settings_page():
-    """Fallback settings page using pure NiceGUI components"""
-    ui.label('⚙️ Settings').classes('text-h4 q-mb-md text-center')
-    ui.label('Configure your application preferences.').classes('text-body1 q-mb-lg text-center')
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-md'):
-            ui.label('🔧 General Settings').classes('text-h6')
-            ui.select(['Light', 'Dark', 'Auto'], label='Theme', value='Light')
-            ui.select(['English', 'Japanese', 'Spanish'], label='Language', value='English')
-            ui.switch('Notifications', value=True)
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-md'):
-            ui.label('👤 Account Settings').classes('text-h6')
-            ui.input('Username', value='user123')
-            ui.input('Email', value='user@example.com')
-            ui.button('Change Password', on_click=lambda: ui.notify('Password change dialog opened!'))
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-md'):
-            ui.label('📱 Application Settings').classes('text-h6')
-            ui.switch('Auto Save', value=True)
-            ui.select(['30 days', '60 days', '90 days', '1 year'], label='Data Retention', value='30 days')
-    
-    with ui.row().classes('full-width justify-center q-mt-lg'):
-        ui.button('💾 Save Settings', on_click=lambda: ui.notify('Settings saved successfully!')).classes('q-mr-sm')
-        ui.button('🔄 Reset to Default', on_click=lambda: ui.notify('Settings reset to default!')) 
+ 

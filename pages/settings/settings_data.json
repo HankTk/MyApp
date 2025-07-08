@@ -1,0 +1,24 @@
+{
+  "title": "My Application - Settings",
+  "header_title": "⚙️ Settings",
+  "header_subtitle": "Configure your application preferences",
+  "app_name": "My Application",
+  "settings": {
+    "general": {
+      "theme": "Light",
+      "language": "English",
+      "notifications": true
+    },
+    "account": {
+      "username": "user123",
+      "email": "user@example.com"
+    },
+    "application": {
+      "autosave": true,
+      "retention_period": "30 days"
+    }
+  },
+  "themes": ["Light", "Dark", "Auto"],
+  "languages": ["English", "Japanese", "Spanish"],
+  "retention_options": ["30 days", "60 days", "90 days", "1 year"]
+} 

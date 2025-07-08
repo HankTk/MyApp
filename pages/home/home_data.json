@@ -1,0 +1,31 @@
+{
+  "title": "My Application - Home",
+  "header_title": "🏠 Welcome to My Application",
+  "header_subtitle": "Your application dashboard",
+  "app_name": "My Application",
+  "stats": {
+    "total_items": 123,
+    "active_users": 45,
+    "success_rate": "89%"
+  },
+  "features": [
+    {
+      "icon": "📊",
+      "title": "Dashboard",
+      "description": "View your application statistics and overview.",
+      "action": "dashboard"
+    },
+    {
+      "icon": "📝",
+      "title": "Recent Activity",
+      "description": "Check your recent activities and updates.",
+      "action": "activity"
+    },
+    {
+      "icon": "🚀",
+      "title": "Quick Actions",
+      "description": "Access frequently used features quickly.",
+      "action": "quickstart"
+    }
+  ]
+} 

@@ -1,0 +1,65 @@
+{
+  "user": {
+    "id": "user_12345",
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "preferences": {
+      "theme": "dark",
+      "language": "en",
+      "timezone": "America/New_York",
+      "date_format": "MM/DD/YYYY",
+      "time_format": "12h"
+    },
+    "notifications": {
+      "email": true,
+      "push": false,
+      "sms": false,
+      "frequency": "daily"
+    },
+    "security": {
+      "two_factor_enabled": true,
+      "session_timeout": 3600,
+      "password_expiry_days": 90
+    }
+  },
+  "application": {
+    "version": "1.2.3",
+    "last_login": "2024-01-15T10:30:00Z",
+    "login_count": 42,
+    "features_enabled": [
+      "file_upload",
+      "data_export",
+      "advanced_search",
+      "custom_dashboard"
+    ],
+    "limits": {
+      "max_file_size": 10485760,
+      "max_upload_count": 100,
+      "storage_quota": 1073741824
+    }
+  },
+  "dashboard": {
+    "layout": "grid",
+    "widgets": [
+      {
+        "id": "stats_widget",
+        "type": "statistics",
+        "position": {"x": 0, "y": 0, "w": 2, "h": 1},
+        "enabled": true
+      },
+      {
+        "id": "chart_widget",
+        "type": "chart",
+        "position": {"x": 2, "y": 0, "w": 2, "h": 2},
+        "enabled": true
+      },
+      {
+        "id": "activity_widget",
+        "type": "activity_feed",
+        "position": {"x": 0, "y": 1, "w": 1, "h": 2},
+        "enabled": false
+      }
+    ],
+    "refresh_interval": 300
+  }
+} 

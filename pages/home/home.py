@@ -4,134 +4,107 @@ import os
 
 # Add utils directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from utils.template_engine import render_template
+from utils.template_loader import load_template
+from utils.script_loader import load_script, load_json
+from utils.page_data_loader import load_page_data
+
+def create_script_loader_section():
+    """Create a simple script loading section"""
+    with ui.card().classes('q-ma-md'):
+        ui.label('📜 Script Loader').classes('text-h6 q-mb-md')
+        
+        # Script loading
+        script_path = ui.input('Script Path', placeholder='Enter script path (e.g., scripts/custom.js)').classes('q-mb-sm')
+        
+        def load_script_file():
+            if script_path.value:
+                result = load_script(script_path.value)
+                ui.notify(result)
+        
+        ui.button('Load Script', on_click=load_script_file).classes('q-mb-sm')
+        
+        # Quick load buttons
+        ui.label('Quick Load:').classes('text-subtitle2 q-mb-sm')
+        
+        quick_scripts = [
+            ('Event Handler', 'pages/home/home_handler.js'),
+            ('Settings Handler', 'pages/settings/settings_handler.js'),
+            ('Custom Functions', 'pages/home/custom.js'),
+            ('Data Handler', 'pages/home/data_handler.js')
+        ]
+        
+        for name, path in quick_scripts:
+            def load_quick_script(p=path):
+                script_path.value = p
+                load_script_file()
+            
+            ui.button(f'Load {name}', on_click=load_quick_script).classes('q-mr-sm q-mb-sm')
+
+def create_json_loader_section():
+    """Create a JSON data loading section"""
+    with ui.card().classes('q-ma-md'):
+        ui.label('📄 JSON Data Loader').classes('text-h6 q-mb-md')
+        
+        # JSON file loading
+        json_path = ui.input('JSON Path', placeholder='Enter JSON path (e.g., data/user_config.json)').classes('q-mb-sm')
+        
+        def load_json_file():
+            if json_path.value:
+                data = load_json(json_path.value)
+                if data and "error" not in data:
+                    ui.notify('JSON data loaded successfully!')
+                    with ui.card().classes('q-mt-sm'):
+                        ui.label('JSON Data:').classes('text-subtitle2')
+                        ui.json_editor(data, on_change=lambda e: ui.notify(f'JSON changed: {e}'))
+                else:
+                    ui.notify(str(data), type='error')
+        
+        ui.button('Load JSON', on_click=load_json_file).classes('q-mb-sm')
+        
+        # Quick load buttons
+        ui.label('Quick Load:').classes('text-subtitle2 q-mb-sm')
+        
+        quick_json_files = [
+            ('User Config', 'data/user_config.json'),
+            ('App Settings', 'data/app_settings.json'),
+            ('Sample Data', 'data/sample.json'),
+            ('Home Page Data', 'pages/home/home_data.json'),
+            ('Settings Page Data', 'pages/settings/settings_data.json')
+        ]
+        
+        for name, path in quick_json_files:
+            def load_quick_json(p=path):
+                json_path.value = p
+                load_json_file()
+            
+            ui.button(f'Load {name}', on_click=load_quick_json).classes('q-mr-sm q-mb-sm')
 
 def create_home_page():
     """Create home page using HTML template as foundation (Angular-like approach)"""
     
-    # Page data (like Angular component data)
-    page_data = {
-        'title': 'My Application - Home',
-        'header_title': '🏠 Welcome to My Application',
-        'header_subtitle': 'Your application dashboard',
-        'app_name': 'My Application',
-        'stats': {
-            'total_items': 123,
-            'active_users': 45,
-            'success_rate': '89%'
-        },
-        'features': [
-            {
-                'icon': '📊',
-                'title': 'Dashboard',
-                'description': 'View your application statistics and overview.',
-                'action': 'dashboard'
-            },
-            {
-                'icon': '📝',
-                'title': 'Recent Activity',
-                'description': 'Check your recent activities and updates.',
-                'action': 'activity'
-            },
-            {
-                'icon': '🚀',
-                'title': 'Quick Actions',
-                'description': 'Access frequently used features quickly.',
-                'action': 'quickstart'
-            }
-        ]
-    }
+    # Load page data from JSON file
+    page_data = load_page_data('home')
     
-    try:
-        # Render the page using HTML template
-        # Use the current directory (pages/home) as the templates directory
-        current_dir = os.path.dirname(__file__)
-        rendered_html = render_template('home_template.html', page_data, templates_dir=current_dir)
+    # Fallback data if JSON file not found
+
+    
+    # Load and render the page using HTML template from file
+    template_path = os.path.join(os.path.dirname(__file__), 'home_template.html')
+    html_container = load_template(template_path, page_data)
+    
+    if html_container:
+        # Add script loader section
+        # create_script_loader_section()
         
-        # Inject the HTML into NiceGUI
-        html_container = ui.html(rendered_html).style('width: 100%;')
+        # Add JSON loader section
+        # create_json_loader_section()
         
-        # Add JavaScript event handlers (like Angular event binding)
-        ui.add_head_html("""
-        <script>
-        window.addEventListener('message', function(event) {
-            const data = event.data;
-            
-            switch(data.type) {
-                case 'dashboard':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: 'Dashboard opened!'
-                    }, '*');
-                    break;
-                    
-                case 'activity':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: 'Activity log opened!'
-                    }, '*');
-                    break;
-                    
-                case 'quickstart':
-                    window.parent.postMessage({
-                        type: 'nicegui_notify',
-                        message: 'Quick start initiated!'
-                    }, '*');
-                    break;
-            }
-        });
-        </script>
-        """)
+        # Load event handler script
+        load_script('pages/home/home_handler.js')
         
         return html_container
-        
-    except FileNotFoundError as e:
-        # Fallback to NiceGUI components if template not found
-        ui.label('❌ Template file not found').classes('text-h6 text-red')
-        ui.label(str(e)).classes('text-caption')
-        
-        # Create fallback page with NiceGUI components
-        create_fallback_home_page()
-        
-    except Exception as e:
-        ui.label(f'❌ Error rendering template: {str(e)}').classes('text-h6 text-red')
-        create_fallback_home_page()
+    else:
+        # Show message if template loading failed
+        ui.label('Home page could not be loaded.').classes('text-h6 q-mb-md text-center text-red')
 
-def create_fallback_home_page():
-    """Fallback home page using pure NiceGUI components"""
-    ui.label('🏠 Welcome to My Application').classes('text-h4 q-mb-md text-center')
-    ui.label('This is the home page of your application.').classes('text-body1 q-mb-lg text-center')
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-md'):
-            ui.label('📊 Dashboard').classes('text-h6')
-            ui.label('View your application statistics and overview.').classes('text-caption')
-            ui.button('Open Dashboard', on_click=lambda: ui.notify('Dashboard opened!')).classes('q-mt-sm')
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-md'):
-            ui.label('📝 Recent Activity').classes('text-h6')
-            ui.label('Check your recent activities and updates.').classes('text-caption')
-            ui.button('View Activity', on_click=lambda: ui.notify('Activity log opened!')).classes('q-mt-sm')
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-md'):
-            ui.label('🚀 Quick Actions').classes('text-h6')
-            ui.label('Access frequently used features quickly.').classes('text-caption')
-            ui.button('Quick Start', on_click=lambda: ui.notify('Quick start initiated!')).classes('q-mt-sm')
-    
-    with ui.row().classes('full-width justify-center q-mt-lg'):
-        ui.label('📈 Statistics').classes('text-h5 q-mb-md')
-    
-    with ui.row().classes('full-width justify-center'):
-        with ui.card().classes('q-ma-sm'):
-            ui.label('123').classes('text-h4 text-primary')
-            ui.label('Total Items').classes('text-caption')
-        
-        with ui.card().classes('q-ma-sm'):
-            ui.label('45').classes('text-h4 text-secondary')
-            ui.label('Active Users').classes('text-caption')
-        
-        with ui.card().classes('q-ma-sm'):
-            ui.label('89%').classes('text-h4 text-positive')
-            ui.label('Success Rate').classes('text-caption') 
+ 

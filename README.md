@@ -19,14 +19,28 @@ MyApp/
 ├── pages/                           # Page components (Angular-like)
 │   ├── home/                        # Home page component
 │   │   ├── home.py                  # Home page logic & data
-│   │   └── home_template.html       # Home page template
+│   │   ├── home_data.json           # Home page data
+│   │   ├── home_template.html       # Home page template
+│   │   ├── home_handler.js          # Home page JavaScript
+│   │   ├── data_handler.js          # Data handling utilities
+│   │   └── custom.js                # Custom JavaScript functions
 │   └── settings/                    # Settings page component
 │       ├── settings.py              # Settings page logic & data
-│       └── settings_template.html   # Settings page template
+│       ├── settings_data.json       # Settings page data
+│       ├── settings_template.html   # Settings page template
+│       └── settings_handler.js      # Settings page JavaScript
+├── data/                            # Configuration and sample data
+│   ├── app_settings.json            # Application settings
+│   ├── user_config.json             # User configuration
+│   ├── sample.json                  # Sample data for demos
+│   └── README.md                    # Data folder documentation
 ├── templates/                       # Shared templates
 │   └── base_layout.html            # Base layout template
 ├── utils/                          # Utilities
-│   └── template_engine.py          # Template processing engine
+│   ├── template_engine.py          # Template processing engine
+│   ├── template_loader.py          # Template loading utilities
+│   ├── script_loader.py            # JavaScript loading utilities
+│   └── page_data_loader.py         # Page data loading utilities
 └── requirements.txt                # Python dependencies
 ```
 
