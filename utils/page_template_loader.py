@@ -1,8 +1,8 @@
 import os
 from nicegui import ui
-from utils.template_engine import render_template, render_string
+from utils.page_template_engine import render_template, render_string
 
-class TemplateLoader:
+class PageTemplateLoader:
     """Utility class for loading HTML templates from files"""
     
     def __init__(self):
@@ -63,17 +63,17 @@ class TemplateLoader:
             return None
 
 # Global instance
-template_loader = TemplateLoader()
+page_template_loader = PageTemplateLoader()
 
 # Convenience functions
 def load_template(template_path, variables=None):
     """Load and render HTML template from file"""
-    return template_loader.load_template_from_file(template_path, variables)
+    return page_template_loader.load_template_from_file(template_path, variables)
 
 def get_template_content(template_path):
     """Get template content without rendering"""
-    return template_loader.get_template_content(template_path)
+    return page_template_loader.get_template_content(template_path)
 
 def render_template_string(template_string, variables=None):
     """Render template string with variables"""
-    return template_loader.render_template_string(template_string, variables) 
+    return page_template_loader.render_template_string(template_string, variables) 

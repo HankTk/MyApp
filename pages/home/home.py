@@ -4,8 +4,8 @@ import os
 
 # Add utils directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from utils.template_loader import load_template
-from utils.script_loader import load_script, load_json
+from utils.page_template_loader import load_template
+from utils.page_script_loader import load_script, load_json
 from utils.page_data_loader import load_page_data
 
 def create_script_loader_section():
@@ -28,9 +28,7 @@ def create_script_loader_section():
         
         quick_scripts = [
             ('Event Handler', 'pages/home/home_handler.js'),
-            ('Settings Handler', 'pages/settings/settings_handler.js'),
-            ('Custom Functions', 'pages/home/custom.js'),
-            ('Data Handler', 'pages/home/data_handler.js')
+            ('Settings Handler', 'pages/settings/settings_handler.js')
         ]
         
         for name, path in quick_scripts:
@@ -46,7 +44,7 @@ def create_json_loader_section():
         ui.label('📄 JSON Data Loader').classes('text-h6 q-mb-md')
         
         # JSON file loading
-        json_path = ui.input('JSON Path', placeholder='Enter JSON path (e.g., data/user_config.json)').classes('q-mb-sm')
+        json_path = ui.input('JSON Path', placeholder='Enter JSON path (e.g., pages/home/home_data.json)').classes('q-mb-sm')
         
         def load_json_file():
             if json_path.value:
@@ -65,9 +63,6 @@ def create_json_loader_section():
         ui.label('Quick Load:').classes('text-subtitle2 q-mb-sm')
         
         quick_json_files = [
-            ('User Config', 'data/user_config.json'),
-            ('App Settings', 'data/app_settings.json'),
-            ('Sample Data', 'data/sample.json'),
             ('Home Page Data', 'pages/home/home_data.json'),
             ('Settings Page Data', 'pages/settings/settings_data.json')
         ]

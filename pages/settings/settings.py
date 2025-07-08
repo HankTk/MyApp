@@ -4,8 +4,8 @@ import os
 
 # Add utils directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from utils.template_loader import load_template
-from utils.script_loader import load_script, load_json
+from utils.page_template_loader import load_template
+from utils.page_script_loader import load_script, load_json
 from utils.page_data_loader import load_page_data
 
 def create_json_loader_section():
@@ -34,8 +34,6 @@ def create_json_loader_section():
         
         quick_json_files = [
             ('Settings Data', 'pages/settings/settings_data.json'),
-            ('User Config', 'data/user_config.json'),
-            ('App Settings', 'data/app_settings.json'),
             ('Home Page Data', 'pages/home/home_data.json')
         ]
         

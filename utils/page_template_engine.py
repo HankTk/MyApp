@@ -3,7 +3,7 @@ import re
 from string import Template
 from typing import Dict, Any
 
-class TemplateEngine:
+class PageTemplateEngine:
     """シンプルなHTMLテンプレートエンジン"""
     
     def __init__(self, templates_dir: str = "templates"):
@@ -116,10 +116,10 @@ class TemplateEngine:
 # 便利な関数
 def render_template(template_name: str, variables: Dict[str, Any], templates_dir: str = "templates") -> str:
     """テンプレートを簡単にレンダリングする関数"""
-    engine = TemplateEngine(templates_dir)
+    engine = PageTemplateEngine(templates_dir)
     return engine.render_template(template_name, variables)
 
 def render_string(template_string: str, variables: Dict[str, Any]) -> str:
     """テンプレート文字列を簡単にレンダリングする関数"""
-    engine = TemplateEngine()
+    engine = PageTemplateEngine()
     return engine.render_string(template_string, variables) 

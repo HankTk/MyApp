@@ -2,7 +2,7 @@ import os
 import json
 from nicegui import ui
 
-class ScriptLoader:
+class PageScriptLoader:
     """Utility class for loading and executing JavaScript scripts from files"""
     
     def __init__(self):
@@ -64,7 +64,7 @@ class ScriptLoader:
             return f"Error reading script: {str(e)}"
 
 # Global instance
-script_loader = ScriptLoader()
+script_loader = PageScriptLoader()
 
 # Convenience functions
 def load_script(script_path):
